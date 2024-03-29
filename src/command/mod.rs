@@ -23,6 +23,7 @@ pub enum Command {
     OpenChannel(String),
     GetExternalInputList,
     SwitchInput(String),
+    ListLaunchPoints,
     IsMuted,
     GetVolume,
     PlayMedia,
@@ -188,6 +189,12 @@ pub fn create_command(id: String, cmd: Command) -> CommandRequest {
             id,
             r#type: String::from("request"),
             uri: String::from("ssap://com.webos.service.update/getCurrentSWInformation"),
+            payload: None,
+        },
+        Command::ListLaunchPoints => CommandRequest {
+            id,
+            r#type: String::from("request"),
+            uri: String::from("ssap://com.webos.applicationManager/listLaunchPoints"),
             payload: None,
         },
         Command::Launch(app_id, params) => CommandRequest {
