@@ -37,6 +37,10 @@ pub enum Command {
     Turn3DOff,
     GetServicesList,
     Launch(String, Value),
+    SendEnterKey,
+    VolumeUp,
+    VolumeDown,
+    GetInputSocket,
 }
 
 #[derive(Debug)]
@@ -47,6 +51,12 @@ pub struct CommandResponse {
 
 pub fn create_command(id: String, cmd: Command) -> CommandRequest {
     match cmd {
+        Command::GetInputSocket => CommandRequest {
+            id,
+            r#type: String::from("request"),
+            uri: String::from("ssap://com.webos.service.networkinput/getPointerInputSocket"),
+            payload: None,
+        },
         Command::CreateToast(text) => CommandRequest {
             id,
             r#type: String::from("request"),
@@ -202,6 +212,24 @@ pub fn create_command(id: String, cmd: Command) -> CommandRequest {
             r#type: String::from("request"),
             uri: String::from("ssap://system.launcher/launch"),
             payload: Some(json!({ "id": app_id, "params": params })),
+        },
+        Command::SendEnterKey => CommandRequest {
+            id,
+            r#type: String::from("request"),
+            uri: String::from("ssap://com.webos.service.ime/sendEnterKey"),
+            payload: None,
+        },
+        Command::VolumeUp => CommandRequest {
+            id,
+            r#type: String::from("request"),
+            uri: String::from("ssap://audio/volumeUp"),
+            payload: None,
+        },
+        Command::VolumeDown => CommandRequest {
+            id,
+            r#type: String::from("request"),
+            uri: String::from("ssap://audio/volumeDown"),
+            payload: None,
         },
     }
 }
